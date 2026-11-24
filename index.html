@@ -27,7 +27,7 @@
 <script>
 "use strict";
 /* ===== Cấu hình: khóa publishable là khóa công khai, an toàn khi nằm trong trang ===== */
-var CFG={url:"https://pcriilgfagtffgxgittk.supabase.co",key:"sb_publishable_S1_uDZjOtTxPwqvYdy2M1w_kXQyk7Ta"};
+var CFG={url:"https://pcriilgfagtffgxgittk.supabase.co",key:"sb_publishable_S1_uDZjOtTxPwqvYdy2M1w_kXQyk7Ta",share:"https://tt01-share.ftg-sevt123-c01.workers.dev"};
 var sb=(window.__SB_MOCK)||window.supabase.createClient(CFG.url,CFG.key);
 var TOPICS=["Rác thải và vệ sinh","Điện","Nước và thoát nước","Thang máy","An ninh","Phòng cháy chữa cháy","Tiếng ồn và mùi","Gửi xe và hầm xe","Thấm dột, nứt","Tiện ích chung","Khác"],
 AREAS=["Trong căn hộ của tôi","Hành lang tầng","Phòng đệm / phòng rác","Thang máy, thang bộ","Sảnh","Hầm xe","Khu tiện ích","Sân, ngoài trời","Khác"],
@@ -48,7 +48,7 @@ function errMsg(e){var m=(e&&e.message)||String(e);if(/Invalid login/i.test(m))r
 async function q(p){var r=await p;if(r.error)throw r.error;return r.data}
 async function act(fn){if(busy)return;busy=true;try{await fn()}catch(e){toast(errMsg(e));console.error(e)}finally{busy=false}}
 function copyText(t,msg){var ok=false;try{var a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;top:0;left:0;opacity:0";document.body.appendChild(a);a.focus();a.select();ok=document.execCommand("copy");a.remove()}catch(e){}if(ok)return toast(msg||"Đã sao chép");if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast(msg||"Đã sao chép")},function(){toast(t)});else toast(t)}
-function lnk(k,id){return location.href.split("#")[0]+"#"+k+"-"+id}
+function lnk(k,id){if(k==="post"&&CFG.share)return CFG.share.replace(/\/$/,"")+"/p/"+id;return location.href.split("#")[0]+"#"+k+"-"+id}
 function copyLink(k,id){copyText(lnk(k,id),"Đã sao chép link")}
 function bar(t,back){return '<div class="bar">'+(back?'<button class="back" onclick="go(\''+back+'\')">‹ Quay lại</button>':'')+'<h1>'+t+'</h1></div>'}
 function tagS(c){return '<span class="tag s-'+c.status+'">'+ST[c.status]+'</span>'+(c.urgent?' <span class="tag urgent">Khẩn cấp</span>':'')+(c.approved?'':' <span class="tag s-new">Chờ duyệt</span>')}
