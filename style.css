@@ -179,3 +179,5 @@ h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute
 details.card summary{cursor:pointer}
 /* Thanh trên cùng có 4 mục: giữ một dòng trên điện thoại */
 @media(max-width:699px){.top nav button{padding:8px 4px;font-size:12.5px;white-space:nowrap}.top nav button span{white-space:nowrap}.topi{gap:4px;padding:0 8px}}
+/* Xác thực ảnh: gọn, bấm mới mở mã đầy đủ */
+details.vf{margin:6px 0}details.vf summary{cursor:pointer;font-size:13px;color:var(--mute)}details.vf .hash{word-break:break-all;margin-top:6px}
