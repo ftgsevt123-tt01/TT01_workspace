@@ -185,3 +185,7 @@ details.vf{margin:6px 0}details.vf summary{cursor:pointer;font-size:13px;color:v
 .rc{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
 .igpv{padding:0 14px 12px;font-size:14px}.igpv>div{margin:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.igpv a{color:var(--mute,inherit);font-size:13px;opacity:.75}
 @media(min-width:1000px){.ig{display:flex;flex-direction:column}.ig .igh{order:0}.ig .igc.cap{order:1;padding:2px 16px 10px}.ig .igm{order:2}.ig .iga{order:3}.ig .igpv{order:4}}
+
+.fsec h3{margin:18px 0 6px}.eb .card{margin:0;box-shadow:none;border:0;padding:0}
+@media(max-width:699px){.topi{gap:2px;padding:0 6px}.topi .brand{font-size:19px;margin:0 2px;flex:none}.top nav{min-width:0;gap:0;justify-content:space-between}.top nav button{padding:8px 3px;font-size:11.5px}.top .me{flex:none;margin-left:2px}.hb{width:34px;margin-left:-2px}}
+.eb>.card>h3:first-child{display:none}

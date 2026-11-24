@@ -247,8 +247,8 @@ async function findMem(){var t=v("fs"),box=$("fr");if(t.length<2){box.innerHTML=
   box.innerHTML=l.map(function(p){return '<div class="hrow" style="margin:8px 0" onclick="showProfile(\''+p.id+'\')">'+av({name:p.name||"?",photo_path:p.photo_path},38)+'<b style="flex:1">'+esc(p.name||"(chưa có tên)")+'</b></div>'}).join("")||'<p class="mute">Không tìm thấy.</p>'}
 function holderRow(o){var p=o.profiles||{};return '<div class="card hrow" onclick="showProfile(\''+o.user_id+'\')">'+av({name:p.name||"?",photo_path:p.photo_path},44)+'<div style="flex:1;min-width:0"><b>'+esc(p.name||"Cư dân")+'</b><div class="mute">'+offLabel(o)+' · '+(o.status==="elected"?"Được bầu":"Lâm thời")+(o.term_end?" · đến "+o.term_end:"")+'</div></div>'+(can("manage_roles")?'<button class="btn sm alt" style="width:auto;margin:0" onclick="event.stopPropagation();rmHolder('+o.id+')">Gỡ</button>':'')+'</div>'}
 function rmHolder(id){act(async function(){await q(sb.from("office_holders").delete().eq("id",id));refresh()})}
-function addHolderUi(office,floor,label){return '<details class="card"><summary><b>+ Thêm '+label+' lâm thời</b></summary><input id="hs_'+office+'" placeholder="Gõ tên cư dân..." oninput="holderSearch(\''+office+'\','+(floor==null?"null":floor)+')"><div id="hr_'+office+'"></div></details>'}
-async function holderSearch(office,floor){var t=v("hs_"+office),box=$("hr_"+office);if(t.length<2){box.innerHTML="";return}var l=await q(sb.from("profiles").select("id,name,photo_path").ilike("name","%"+t+"%").limit(8));box.innerHTML=l.map(function(p){return '<button class="sl" onclick="addHolder(\''+p.id+'\',\''+office+'\','+(floor==null?"null":floor)+')"><b>'+esc(p.name||"Cư dân")+'</b></button>'}).join("")||'<p class="mute">Không thấy ai.</p>'}
+function addHolderUi(office,floor,label){return '<details class="card"><summary><b>+ Thêm '+label+' lâm thời</b></summary><input id="hs_'+office+(floor==null?"":floor)+'" placeholder="Gõ tên cư dân..." oninput="holderSearch(\''+office+'\','+(floor==null?"null":floor)+')"><div id="hr_'+office+(floor==null?"":floor)+'"></div></details>'}
+async function holderSearch(office,floor){var k=office+(floor==null?"":floor),t=v("hs_"+k),box=$("hr_"+k);if(t.length<2){box.innerHTML="";return}var l=await q(sb.from("profiles").select("id,name,photo_path").ilike("name","%"+t+"%").limit(8));box.innerHTML=l.map(function(p){return '<button class="sl" onclick="addHolder(\''+p.id+'\',\''+office+'\','+(floor==null?"null":floor)+')"><b>'+esc(p.name||"Cư dân")+'</b></button>'}).join("")||'<p class="mute">Không thấy ai.</p>'}
 function addHolder(uid,office,floor){act(async function(){await q(sb.from("office_holders").insert({user_id:uid,office:office,floor:floor,status:"interim"}));refresh()})}
 async function towerPane(){
   var l=(await q(sb.from("office_holders").select("*, profiles!user_id(name,photo_path)").in("office",["tower","deputy_tower"]))).filter(validOff);
@@ -263,16 +263,26 @@ async function floorPane(members){
   var fl=await floorList();if(members&&!can("view_floor_members")){var vf=verifiedUnits().map(function(u){return u.units&&u.units.floor});fl=fl.filter(function(f){return vf.indexOf(f)>-1})}
   if(!fl.length)return '<p class="mute">'+(members?"Bạn chưa có căn hộ nào được xác minh nên chưa xem được danh sách thành viên tầng.":"Chưa có tầng nào được khai báo.")+'</p>';
   if(bf==null||fl.indexOf(bf)<0)bf=myFloor()!=null?myFloor():fl[0];
-  var h='<div class="chips">'+fl.map(function(f){return '<button class="chip'+(bf===f?" on":"")+'" onclick="setFloor('+f+')">T'+f+'</button>'}).join("")+'</div><h3>Tầng '+bf+'</h3>';
+  var h=members?'<div class="chips">'+fl.map(function(f){return '<button class="chip'+(bf===f?" on":"")+'" onclick="setFloor('+f+')">T'+f+'</button>'}).join("")+'</div><h3>Tầng '+bf+'</h3>':"";
   if(members){
     var r=await sb.rpc("floor_members",{p_floor:bf});
     if(r.error)return h+'<p class="mute">Chỉ cư dân có căn đã xác minh ở tầng này hoặc người quản lý mới xem được danh sách.</p>';
     var seen={},l=(r.data||[]).filter(function(m){if(seen[m.user_id])return false;seen[m.user_id]=1;return true});
     return h+(l.map(function(m){return '<div class="card hrow" onclick="showProfile(\''+m.user_id+'\')">'+av({name:m.name||"?",photo_path:m.photo_path},44)+'<div style="flex:1"><b>'+esc(m.name||"Cư dân")+'</b>'+(m.unit_label?'<div class="mute">Căn '+esc(m.unit_label)+'</div>':'')+'</div></div>'}).join("")||'<p class="mute">Chưa có thành viên đã xác minh ở tầng này.</p>')}
-  var l2=(await q(sb.from("office_holders").select("*, profiles!user_id(name,photo_path)").eq("office","floor").eq("floor",bf))).filter(validOff);
-  h+=(l2.map(holderRow).join("")||'<p class="mute">Tầng này chưa có đại diện.</p>');
-  if(can("manage_roles"))h+=addHolderUi("floor",bf,"đại diện tầng "+bf);
-  return h+await elCard("floor",bf)}
+  return await floorReps(fl)}
+var elOpen={};
+function elToggle(el,f){elOpen[f]=el.open;if(el.open&&!el.dataset.l){el.dataset.l=1;elCard("floor",f).then(function(x){el.querySelector(".eb").innerHTML=x}).catch(function(e){el.querySelector(".eb").innerHTML='<p class="mute">'+esc(errMsg(e))+'</p>'})}}
+async function floorReps(fl){
+  var all=(await q(sb.from("office_holders").select("*, profiles!user_id(name,photo_path)").eq("office","floor"))).filter(validOff),els=await q(sb.from("elections").select("floor,is_open,closes_at").eq("scope","floor")),live={},by={};
+  els.forEach(function(e){if(e.is_open&&Date.now()<ts(e.closes_at))live[e.floor]=1});
+  all.forEach(function(o){(by[o.floor]=by[o.floor]||[]).push(o)});
+  var has=fl.filter(function(f){return by[f]}),none=fl.filter(function(f){return!by[f]}),mf=myFloor();
+  async function sec(f){var rows=by[f]||[],auto=elOpen[f]||live[f]||f===mf,h='<div class="fsec"><h3>Tầng '+f+(live[f]?' <span class="tag s-sent">Đang bầu cử</span>':'')+'</h3>'+(rows.map(holderRow).join("")||'<p class="mute">Chưa có đại diện.</p>');
+    if(can("manage_roles"))h+=addHolderUi("floor",f,"đại diện tầng "+f);
+    h+='<details class="card"'+(auto?" open":"")+' ontoggle="elToggle(this,'+f+')"'+(auto?' data-l="1"':'')+'><summary><b>🗳 Bầu cử tầng '+f+'</b></summary><div class="eb">'+(auto?await elCard("floor",f):"")+'</div></details></div>';return h}
+  var h="";for(var i=0;i<has.length;i++)h+=await sec(has[i]);
+  if(none.length){h+='<h2 style="margin-top:22px">Tầng chưa có đại diện</h2>';for(var j=0;j<none.length;j++)h+=await sec(none[j])}
+  return h}
 
 /* ----- Hồ sơ công khai ----- */
 async function showProfile(uid){
