@@ -1,7 +1,8 @@
 {
+ "id": "./",
  "name": "TT01 - Cộng đồng cư dân",
  "short_name": "TT01",
- "description": "Phản ánh, tin tức và Ban quản trị tòa TT01 Yên Bình Complex",
+ "description": "Phản ánh, tin tức, sổ tay và Ban quản trị tòa TT01 Yên Bình Complex",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
@@ -10,23 +11,9 @@
  "background_color": "#24584a",
  "theme_color": "#2d6a55",
  "icons": [
-  {
-   "src": "icon-192.png",
-   "sizes": "192x192",
-   "type": "image/png",
-   "purpose": "any"
-  },
-  {
-   "src": "icon-512.png",
-   "sizes": "512x512",
-   "type": "image/png",
-   "purpose": "any"
-  },
-  {
-   "src": "icon-maskable-512.png",
-   "sizes": "512x512",
-   "type": "image/png",
-   "purpose": "maskable"
-  }
+  { "src": "icon-192.png?v=2", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+  { "src": "icon-512.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+  { "src": "icon-maskable-192.png?v=2", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+  { "src": "icon-maskable-512.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
  ]
 }

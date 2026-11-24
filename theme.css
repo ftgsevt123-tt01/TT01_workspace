@@ -30,3 +30,12 @@
 .tag.sk-bql{background:#dff0e8;color:#1f5a46}.tag.sk-res{background:#fdf0d5;color:#7a5410}.tag.sk-ext{background:#e6e9f5;color:#3a4686}
 :root[data-theme="dark"] .tag.sk-bql{background:#1f4a3a;color:#a8e6c9}:root[data-theme="dark"] .tag.sk-res{background:#4a3a14;color:#f1d58e}:root[data-theme="dark"] .tag.sk-ext{background:#2a3157;color:#b9c3f2}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.sk-bql{background:#1f4a3a;color:#a8e6c9}:root:not([data-theme="light"]) .tag.sk-res{background:#4a3a14;color:#f1d58e}:root:not([data-theme="light"]) .tag.sk-ext{background:#2a3157;color:#b9c3f2}}
+
+/* Sổ tay cư dân: nhãn chủ đề, ô loại file */
+.tag.hbtp{background:#e7efe9;color:#2f5b4b}.hbx{background:#f4e3df;color:#a43c26}.hbfile{background:var(--glass2)}
+:root[data-theme="dark"] .tag.hbtp{background:#22362e;color:#bfe3d2}:root[data-theme="dark"] .hbx{background:#4a2620;color:#ffb4a3}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.hbtp{background:#22362e;color:#bfe3d2}:root:not([data-theme="light"]) .hbx{background:#4a2620;color:#ffb4a3}}
+/* Tô sáng từ khóa tìm kiếm */
+mark{background:#fde9a8;color:inherit;border-radius:3px;padding:0 1px}
+:root[data-theme="dark"] mark{background:#5c4a12;color:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) mark{background:#5c4a12;color:#fff}}
