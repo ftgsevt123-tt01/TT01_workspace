@@ -23,3 +23,4 @@
 /* Nút chuyển kiểu hiển thị: chữ trên nền chọn trong giao diện tối */
 :root[data-theme="dark"] .vmt button.on{color:#0a110e;background:#7fd1b0}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .vmt button.on{color:#0a110e;background:#7fd1b0}}
+.bdg{background:var(--red);color:#fff}.card.nt{border-left-color:var(--teal)}
