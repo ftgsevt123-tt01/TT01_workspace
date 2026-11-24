@@ -231,3 +231,61 @@ label.row{flex-wrap:nowrap}
 .srbox{padding:6px 12px}.srh{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mute);margin:10px 0 2px}
 .srr{display:flex;gap:10px;width:100%;text-align:left;border:0;border-top:1px solid var(--hair);background:none;color:var(--ink);font:inherit;padding:10px 0;cursor:pointer}.srh+.srr,.srbox>.srr:first-child{border-top:0}
 .sri{flex:none;font-size:20px;line-height:1.3}.srx{flex:1;min-width:0}.srx b{display:block;font-weight:600;line-height:1.35}.srx small{display:block;color:var(--mute);font-size:13px;line-height:1.45;margin-top:2px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.srx em{display:block;font-style:normal;font-size:12px;color:var(--mute);margin-top:2px}
+
+/* ===================================================================
+   BỐ CỤC MỚI (11/2026): thanh trên = menu, TT01, người dùng;
+   thanh dưới = Trang chủ, Phản ánh, Bảng tin, Quản trị (điện thoại).
+   Máy tính (>=1000px) giữ menu chữ ở thanh trên, ẩn thanh dưới.
+   =================================================================== */
+.ico{width:22px;height:22px;flex:none;display:inline-block;vertical-align:middle}
+.btn .ico{width:20px;height:20px;margin:-3px 6px 0 0}
+/* Thanh trên */
+.top .tnav{display:none}.tsp{flex:1}
+.top .me{display:flex;align-items:center;gap:8px;border-radius:99px;padding:3px 3px 3px 10px;margin-right:-4px;font:inherit;color:var(--ink)}
+.top .me.on{box-shadow:none;background:color-mix(in srgb,var(--teal) 12%,transparent)}
+.mei{display:flex;flex-direction:column;align-items:flex-end;line-height:1.15;min-width:0}.mei b{font-size:14px;font-weight:700;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mei small{font-size:11.5px;color:var(--mute)}
+.top .me .bdg{top:-1px;right:-1px}
+/* Thanh dưới */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:color-mix(in srgb,var(--card) 92%,transparent);border-top:1px solid var(--hair);-webkit-backdrop-filter:blur(22px) saturate(1.6);backdrop-filter:blur(22px) saturate(1.6)}
+.bnav button{flex:1;max-width:110px;border:0;background:none;color:var(--mute);font:600 11.5px inherit;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 0;cursor:pointer}
+.bnav .ico{width:26px;height:26px;padding:3px 14px;box-sizing:content-box;border-radius:99px;transition:background .15s}
+.bnav button.on{color:var(--teal)}.bnav button.on .ico{background:color-mix(in srgb,var(--teal) 15%,transparent)}
+#app{padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.ftr{margin-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.hbbulk{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+/* Hàng icon thường dùng */
+.qrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:2px 0 6px}
+.qrow button{border:0;background:none;color:var(--ink);font:600 13px inherit;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;padding:4px 0}
+.qrow i{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;background:var(--card);border:1px solid var(--hair);box-shadow:var(--sh)}
+.qrow i .ico{width:28px;height:28px}
+.qrow button:active i{transform:scale(.96)}
+/* Tiêu đề mục */
+h2.sec{font-size:19px;font-weight:700;margin:22px 0 10px;letter-spacing:-.01em;text-transform:none;color:var(--ink)}
+.sech{display:flex;align-items:center;justify-content:space-between;gap:10px}.sech h2.sec{margin-bottom:10px}.sech a{color:var(--teal);font-size:14px;font-weight:600;text-decoration:none;margin-top:12px}
+/* Cần chú ý */
+.att{display:flex;gap:12px;align-items:center;cursor:pointer}.att>div{flex:1;min-width:0}.att b{display:block;line-height:1.35}
+.ai{flex:none;width:46px;height:46px;border-radius:14px;display:grid;place-items:center}.att .chv{width:20px;height:20px;color:var(--mute)}
+/* Hoạt động Ban quản trị (vuốt ngang) */
+.hact{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;margin:0 -16px;padding:2px 16px 8px;scrollbar-width:none}.hact::-webkit-scrollbar{display:none}
+.hac{flex:none;width:220px;scroll-snap-align:start;border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--hair);box-shadow:var(--sh);cursor:pointer}
+.hac img,.hac .hph{display:block;width:100%;height:118px;object-fit:cover;margin:0;border-radius:0}.hac .hph{display:grid;place-items:center}.hac .hph .ico{width:36px;height:36px}
+.hab{padding:10px 12px 12px}.hab b{display:block;font-size:14.5px;line-height:1.35;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}.hab small{display:block;color:var(--mute);font-size:12px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hab .tag{font-size:10.5px;margin-bottom:4px;display:inline-block}
+/* Bảng số liệu (Phản ánh, Quản trị) */
+.dash{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:4px 0 8px}
+.dt{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--hair);background:var(--card);border-radius:16px;padding:12px;font:inherit;color:var(--ink);box-shadow:var(--sh);cursor:pointer}
+.dt i{grid-row:1/3;width:42px;height:42px;border-radius:13px;display:grid;place-items:center}.dt b{font-size:24px;font-weight:800;line-height:1.05}.dt span{font-size:12.5px;color:var(--mute);line-height:1.25}
+.dt.on{border-color:var(--teal);box-shadow:0 0 0 2px color-mix(in srgb,var(--teal) 30%,transparent)}
+.dsub{font-size:13px;color:var(--mute);margin:0 2px 12px;line-height:1.5}.dsub b{color:var(--ink)}
+.dprog{background:var(--card);border:1px solid var(--hair);border-radius:16px;padding:12px;margin:0 0 8px;font-size:13.5px}.dprog .rb{position:relative;height:10px;margin-top:8px}.dprog .rb em{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.5}
+@media(min-width:700px){.dash{grid-template-columns:repeat(4,1fr)}}
+/* Máy tính: menu chữ ở thanh trên, không có thanh dưới */
+@media(min-width:1000px){
+.top .tnav{display:flex;flex:none;margin-left:16px;gap:4px}
+.bnav{display:none}
+#app{padding-bottom:56px}.ftr{margin-bottom:24px}.hbbulk{bottom:16px}
+.hact{margin:0;padding:2px 0 8px}
+.qrow{grid-template-columns:repeat(4,110px);justify-content:start;gap:12px}
+}
+@media(max-width:359px){.mei{display:none}}
+.sech a{white-space:nowrap}
+@media(max-width:379px){h2.sec{font-size:17px}.qrow i{width:56px;height:56px;border-radius:18px}}

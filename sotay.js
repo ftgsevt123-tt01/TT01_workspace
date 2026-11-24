@@ -38,11 +38,10 @@ function hbCard(it,E){var k=hbKL(it.kind),cov=pubUrl(it.cover_path),nf=(it.files
   return '<div class="card nl hbc" data-s="'+esc((it.title+" "+(it.body||"")+" "+(it.source||"")+" "+hbTopicL(it.topic)).toLowerCase())+'" onclick="go(\'hbitem\','+it.id+')">'+(cov?'<img src="'+esc(cov)+'" alt="">':'<div class="nth">'+k[2]+'</div>')+'<div style="min-width:0;flex:1"><div class="row">'+(it.pinned?'<span class="tag s-sent">📌 Ghim</span>':'')+'<span class="tag hbtp">'+esc(hbTopicL(it.topic))+'</span>'+(it.kind==="question"?(it.solved?'<span class="tag s-done">Đã giải đáp</span>':''):'')+(it.hidden?'<span class="tag s-new">Đã ẩn</span>':'')+'</div><b class="nt">'+esc(it.title)+'</b><div class="mute">'+esc(hbAu(it))+' · '+ago(it.created_at)+'</div><div class="mute hbm">'+(nf?'<span>📎 '+nf+' file</span>':'')+'<span>❤️ '+r.n+'</span><span>💬 '+nc+'</span>'+(ng>0?'<span>🔗 '+ng+' câu liên quan</span>':'')+'</div></div></div>'}
 async function hbView(){
   if(!hbVisible())return bar("Sổ tay cư dân")+'<p class="mute">Mục này chưa mở.</p>';
-  try{await hbLoadTopics()}catch(e){return hbNoDb(e)}
-  var tipOpen=await hbTipOpen(),qy=sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("kind",hbk).order("pinned",{ascending:false}).order("created_at",{ascending:false}).limit(200);
-  var act0=hbTopics.filter(function(t){return t.active});if(hbt!=="all"&&!act0.some(function(t){return t.key===hbt}))hbt="all";
-  if(hbt!=="all")qy=qy.eq("topic",hbt);
-  var l=await q(qy),E=await hbEngage(l.map(function(x){return x.id})),k=hbKL(hbk);E.g={};l.forEach(function(x){if(x.ref_group)E.g[x.ref_group]=(E.g[x.ref_group]||0)+1});
+  var qy=sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("kind",hbk).order("pinned",{ascending:false}).order("created_at",{ascending:false}).limit(200);if(hbt!=="all")qy=qy.eq("topic",hbt);
+  var R;try{R=await Promise.all([hbLoadTopics(),hbTipOpen(),q(qy)])}catch(e){return hbNoDb(e)}
+  var tipOpen=R[1],l=R[2],act0=hbTopics.filter(function(t){return t.active});if(hbt!=="all"&&!act0.some(function(t){return t.key===hbt})){hbt="all";return hbView()}
+  var E=await hbEngage(l.map(function(x){return x.id})),k=hbKL(hbk);E.g={};l.forEach(function(x){if(x.ref_group)E.g[x.ref_group]=(E.g[x.ref_group]||0)+1});
   var add={doc:"+ Đăng tài liệu",tip:"+ Chia sẻ mẹo",question:"+ Đặt câu hỏi"}[hbk];
   var h='<div class="bar"><h1>Sổ tay cư dân</h1><span style="flex:1"></span>'+(hbCanAdd(hbk,tipOpen)?'<button class="btn sm" style="width:auto;margin:0" onclick="hbNew()">'+add+'</button>':'')+'</div>'
     +((hbMod()||{}).state==="admin"?'<p class="mute">Mục này đang ẩn với cư dân, chỉ admin thấy.</p>':'')
@@ -56,11 +55,11 @@ async function hbView(){
 
 /* ----- Chi tiết ----- */
 async function hbItemView(){
-  try{await hbLoadTopics()}catch(e){return hbNoDb(e)}
-  var id=cur,it=await q(sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("id",id).maybeSingle());
-  if(!it)return bar("Không tìm thấy","hb")+'<p class="mute">Bài không tồn tại, đã bị xóa hoặc đang ẩn.</p>';
-  hbk=it.kind;var k=hbKL(it.kind),E=await hbEngage([id]),r=E.r[id]||{n:0,my:false},nc=E.c[id]||0,files=it.files||[],urls={};
-  if(files.length){try{var s=await sb.storage.from("handbook-files").createSignedUrls(files.map(function(f){return f.path}),3600);(s.data||[]).forEach(function(x){if(x&&x.signedUrl)urls[x.path]=x.signedUrl})}catch(e){console.error(e)}}
+  var id=cur,W;try{W=await Promise.all([hbLoadTopics(),q(sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("id",id).maybeSingle()),hbEngage([id]),hbCmList(id)])}catch(e){return hbNoDb(e)}
+  var it=W[1];if(!it)return bar("Không tìm thấy","hb")+'<p class="mute">Bài không tồn tại, đã bị xóa hoặc đang ẩn.</p>';
+  hbk=it.kind;var k=hbKL(it.kind),E=W[2],r=E.r[id]||{n:0,my:false},nc=E.c[id]||0,files=it.files||[],urls={};
+  var W2=await Promise.all([files.length?sb.storage.from("handbook-files").createSignedUrls(files.map(function(f){return f.path}),3600).catch(function(e){console.error(e);return{}}):Promise.resolve({}),it.kind==="question"?hbRelated(it):Promise.resolve("")]);
+  (W2[0].data||[]).forEach(function(x){if(x&&x.signedUrl)urls[x.path]=x.signedUrl});
   var cov=pubUrl(it.cover_path),me=U.s.user.id,own=it.author_id===me,adm=hbAdm(),mod=can("hide_content"),B='style="width:auto;margin:0"',btns="";
   if(own||adm)btns+='<button class="btn sm alt" '+B+' onclick="hbEdit('+id+')">✏️ Sửa</button>'+(own?'<button class="btn sm alt" '+B+' onclick="cf(this,function(){hbDel('+id+')})">🗑 Xóa</button>':'<button class="btn sm alt" '+B+' onclick="hbDelUi(['+id+'])">🗑 Xóa</button>');
   if(it.kind==="question"&&(own||adm))btns+='<button class="btn sm'+(it.solved?" alt":"")+'" '+B+' onclick="hbSet('+id+',{solved:'+!it.solved+'})">'+(it.solved?"Bỏ đánh dấu đã giải đáp":"✓ Đánh dấu đã giải đáp")+'</button>';
@@ -74,10 +73,11 @@ async function hbItemView(){
     +(files.length?'<div class="hbfs">'+files.map(function(f){var u=urls[f.path];return u?'<a class="hbfile" href="'+esc(u)+'" target="_blank" rel="noopener"><span class="hbx">'+esc(hbExt(f))+'</span><span class="hbfn"><b>'+esc(f.name||"Tệp đính kèm")+'</b><small>'+hbSize(f.size)+' · bấm để mở</small></span></a>':'<div class="hbfile off"><span class="hbx">'+esc(hbExt(f))+'</span><span class="hbfn"><b>'+esc(f.name||"Tệp đính kèm")+'</b><small>Không mở được file</small></span></div>'}).join("")+'</div>':'')
     +(btns?'<div class="row" style="gap:8px;margin-top:12px">'+btns+'</div>':'')+'</div>';
   h+='<div class="iga hbbar"><button class="heart'+(r.my?" on":"")+'" onclick="hbLike('+id+','+r.my+')"><span class="e">'+(r.my?"❤️":"🤍")+'</span><span class="rc" onclick="event.stopPropagation();hbWho('+id+')">'+r.n+'</span></button><button onclick="var c=document.getElementById(\'hcin\');if(c)c.focus()"><span class="e">💬</span>'+nc+'</button><span style="flex:1"></span><button onclick="copyLink(\'hbitem\','+id+')" aria-label="Sao chép link"><span class="e">🔗</span></button></div>';
-  if(it.kind==="question")h+=await hbRelated(it);
-  return h+'<h2>'+(it.kind==="question"?"Trả lời và thảo luận":"Bình luận")+'</h2>'+await hbComments(it)}
-async function hbComments(it){
-  var l=await q(sb.from("hb_comments").select("*, profiles!author_id(name,photo_path)").eq("item_id",it.id).order("created_at",{ascending:true})),me=U.s.user.id,adm=hbAdm(),mod=can("hide_content");
+  h+=W2[1];
+  return h+'<h2>'+(it.kind==="question"?"Trả lời và thảo luận":"Bình luận")+'</h2>'+hbComments(it,W[3])}
+function hbCmList(id){return q(sb.from("hb_comments").select("*, profiles!author_id(name,photo_path)").eq("item_id",id).order("created_at",{ascending:true}))}
+function hbComments(it,l){
+  var me=U.s.user.id,adm=hbAdm(),mod=can("hide_content");
   var h='<div class="card hbcm">'+(l.map(function(c){var p=c.profiles||{},a=[];if(c.author_id===me||adm)a.push('<a class="mute" href="#" onclick="hbDelCm('+c.id+');return false">Xóa</a>');if(mod)a.push('<a class="mute" href="#" onclick="hbHideCm('+c.id+','+(!c.hidden)+');return false">'+(c.hidden?"Hiện lại":"Ẩn")+'</a>');return '<div class="cm" style="'+(c.hidden?"opacity:.5":"")+'">'+av({name:p.name||"?",photo_path:p.photo_path},30)+'<div style="flex:1;min-width:0"><b>'+esc(p.name||"Cư dân")+'</b>'+(c.author_id===it.author_id&&it.kind==="question"?' <span class="tag s-sent">Người hỏi</span>':'')+' <span class="mute">'+ago(c.created_at)+'</span>'+(c.hidden?' <span class="tag s-new">Đã ẩn</span>':'')+'<div class="hbb">'+hbLinks(c.body)+'</div>'+(a.length?'<div class="row" style="gap:12px">'+a.join("")+'</div>':'')+'</div></div>'}).join("")||'<p class="mute" style="margin:0">'+(it.kind==="question"?"Chưa có trả lời.":"Chưa có bình luận.")+'</p>');
   if(it.hidden)h+='<p class="mute">Bài đang ẩn nên không bình luận được.</p>';
   else if(!hbMember())h+='<p class="mute">Cần khai báo căn hộ để bình luận.</p>';
@@ -199,7 +199,7 @@ var mpTab="hb",mpK="all";
 async function myPostsView(){var me=U.s.user.id,r=await Promise.all([sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("author_id",me).order("created_at",{ascending:false}).limit(300),sb.from("posts").select("*").eq("author_id",me).order("created_at",{ascending:false}).limit(300),sb.from("activities").select("*").eq("author_id",me).order("created_at",{ascending:false}).limit(300),loadCases().catch(function(){return[]})]);
   var hb=r[0].error?null:r[0].data||[],ps=r[1].error?[]:r[1].data||[],ac=r[2].error?[]:r[2].data||[],cs=r[3]||[],F=["author_id","user_id","created_by","reporter_id"],hasA=cs.some(function(c){return F.some(function(f){return f in c})}),uids=U.units.map(function(u){return u.unit_id});
   var mc=hasA?cs.filter(function(c){return F.some(function(f){return c[f]===me})}):cs.filter(function(c){return uids.indexOf(c.unit_id)>-1});
-  if(hb)await hbLoadTopics().catch(function(){});
+  if(hb&&!hbTopics)await hbLoadTopics().catch(function(){});
   var T=[["hb","Sổ tay",hb?hb.length:0],["voc",hasA?"Phản ánh":"Phản ánh của căn",mc.length],["feed","Bảng tin",ps.length],["act","Hoạt động",ac.length]].filter(function(x){return x[0]==="hb"?(hb&&hbVisible()):x[0]==="voc"||x[2]>0||(x[0]==="feed"&&canPost())||(x[0]==="act"&&can("post_activity"))});
   if(!T.some(function(x){return x[0]===mpTab}))mpTab=T[0][0];
   var h=bar("Bài đăng của tôi","mine")+'<div class="sst mp">'+T.map(function(x){return '<div onclick="mpTab=\''+x[0]+'\';refresh()" class="'+(mpTab===x[0]?"on":"")+'"><b>'+x[2]+'</b><span>'+x[1]+'</span></div>'}).join("")+'</div>';

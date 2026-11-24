@@ -39,3 +39,27 @@
 mark{background:#fde9a8;color:inherit;border-radius:3px;padding:0 1px}
 :root[data-theme="dark"] mark{background:#5c4a12;color:#fff}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) mark{background:#5c4a12;color:#fff}}
+
+/* Bố cục mới: màu ô icon thường dùng, ô "Cần chú ý", bảng số liệu */
+.q1,.d1,.a1{color:#1f8a5b}.q2,.d2{color:#2f6fd6}.q3,.d4{color:#d98a12}.q4{color:#5c6b64}.d3{color:#2c7a4b}.a2{color:#c8432b}
+.d1 i,.a1{background:#e3f4ea}.d2 i{background:#e4edfb}.d3 i{background:#e6f3ea}.d4 i{background:#fdf0d9}.a2{background:#fde8e3}
+.hac .hph{background:linear-gradient(135deg,#d8ece3,#eef5f1);color:#2d6a55}
+:root[data-theme="dark"] .q1,:root[data-theme="dark"] .d1,:root[data-theme="dark"] .a1{color:#7fd1b0}:root[data-theme="dark"] .q2,:root[data-theme="dark"] .d2{color:#8db4f5}:root[data-theme="dark"] .q3,:root[data-theme="dark"] .d4{color:#f3c06a}:root[data-theme="dark"] .q4{color:#a9b8b0}:root[data-theme="dark"] .d3{color:#6cc58b}:root[data-theme="dark"] .a2{color:#ff8b73}
+:root[data-theme="dark"] .d1 i,:root[data-theme="dark"] .a1{background:#1d3a2f}:root[data-theme="dark"] .d2 i{background:#1d2b45}:root[data-theme="dark"] .d3 i{background:#1d3626}:root[data-theme="dark"] .d4 i{background:#3d3018}:root[data-theme="dark"] .a2{background:#45231d}
+:root[data-theme="dark"] .hac .hph{background:linear-gradient(135deg,#1d3a2f,#16201c);color:#7fd1b0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .q1,:root:not([data-theme="light"]) .d1,:root:not([data-theme="light"]) .a1{color:#7fd1b0}:root:not([data-theme="light"]) .q2,:root:not([data-theme="light"]) .d2{color:#8db4f5}:root:not([data-theme="light"]) .q3,:root:not([data-theme="light"]) .d4{color:#f3c06a}:root:not([data-theme="light"]) .q4{color:#a9b8b0}:root:not([data-theme="light"]) .d3{color:#6cc58b}:root:not([data-theme="light"]) .a2{color:#ff8b73}
+:root:not([data-theme="light"]) .d1 i,:root:not([data-theme="light"]) .a1{background:#1d3a2f}:root:not([data-theme="light"]) .d2 i{background:#1d2b45}:root:not([data-theme="light"]) .d3 i{background:#1d3626}:root:not([data-theme="light"]) .d4 i{background:#3d3018}:root:not([data-theme="light"]) .a2{background:#45231d}:root:not([data-theme="light"]) .hac .hph{background:linear-gradient(135deg,#1d3a2f,#16201c);color:#7fd1b0}}
+
+/* ===== Quy tắc tương phản: nền xanh sáng (hoặc màu sáng) thì chữ đen, không dùng chữ trắng =====
+   Giao diện tối dùng --teal sáng (#7fd1b0), nên mọi thứ "đang chọn" có nền --teal phải có chữ tối. */
+:root[data-theme="dark"] .chip.on,:root[data-theme="dark"] .seg button.on,:root[data-theme="dark"] .vmt button.on,:root[data-theme="dark"] .btn.sm:not(.alt),:root[data-theme="dark"] .ps.ok i{color:#0a110e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,:root:not([data-theme="light"]) .seg button.on,:root:not([data-theme="light"]) .vmt button.on,:root:not([data-theme="light"]) .btn.sm:not(.alt),:root:not([data-theme="light"]) .ps.ok i{color:#0a110e}}
+/* Nút đỏ (Drop, Xóa) ở giao diện tối: đỏ sáng nên chữ cũng phải tối */
+:root[data-theme="dark"] .btn[style*="--red"]{color:#2a0b05!important}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn[style*="--red"]{color:#2a0b05!important}}
+/* Màu cam của số liệu đậm hơn để dễ đọc trên nền trắng */
+.q3,.d4{color:#a8650a}
+.dp .di small{color:color-mix(in srgb,var(--ink) 75%,transparent)}
+
+:root[data-theme="dark"] .chip.on,:root[data-theme="dark"] .seg button.on{background:linear-gradient(135deg,#8fdcbd,#5fc29c);border-color:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,:root:not([data-theme="light"]) .seg button.on{background:linear-gradient(135deg,#8fdcbd,#5fc29c);border-color:transparent}}
