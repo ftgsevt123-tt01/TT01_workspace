@@ -1,0 +1,25 @@
+/* MÀU SẮC. Mọi biến màu (sáng/tối/desktop) nằm ở đây. Nạp sau style.css */
+:root{--bg:#f1f4f2;--card:#fff;--ink:#1c2924;--mute:#5c6b64;--line:#dbe2de;--teal:#2d6a55;--amber:#7a8a83;--red:#c8432b;--green:#2c7a4b;--on:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1512;--card:#16201c;--ink:#e6eee9;--mute:#97a59e;--line:#25322c;--teal:#7fd1b0;--amber:#a3b2ab;--red:#ff8b73;--green:#6cc58b;--on:#0e1512;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1512;--card:#16201c;--ink:#e6eee9;--mute:#97a59e;--line:#25322c;--teal:#7fd1b0;--amber:#a3b2ab;--red:#ff8b73;--green:#6cc58b;--on:#0e1512;color-scheme:dark}
+:root{--glass:rgba(255,255,255,.62);--glass2:rgba(255,255,255,.4);--hair:rgba(20,33,61,.09);--sh:0 8px 28px -12px rgba(36,88,74,.28);--g1:#3b8068;--g2:#24584a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--glass:rgba(24,34,58,.55);--glass2:rgba(24,34,58,.35);--hair:rgba(255,255,255,.09);--sh:0 10px 30px -14px rgba(0,0,0,.7);--g1:#2f7a62;--g2:#1a4538}}
+:root[data-theme="dark"]{--glass:rgba(24,34,58,.55);--glass2:rgba(24,34,58,.35);--hair:rgba(255,255,255,.09);--sh:0 10px 30px -14px rgba(0,0,0,.7);--g1:#2f7a62;--g2:#1a4538}
+:root{--g1:#1f6a50;--g2:#154d3a;--amber:#566761}
+:root[data-theme="dark"]{--g1:#1f6350;--g2:#154436;--amber:#b4c3bc}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--g1:#1f6350;--g2:#154436;--amber:#b4c3bc}}
+:root[data-theme="dark"] .btn:not(.alt){background:linear-gradient(135deg,#8fdcbd,#5fc29c);color:#08120e;border-color:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn:not(.alt){background:linear-gradient(135deg,#8fdcbd,#5fc29c);color:#08120e;border-color:transparent}}
+:root[data-theme="dark"] .brand{background:linear-gradient(135deg,#8fdcbd,#5fc29c);-webkit-background-clip:text;background-clip:text}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .brand{background:linear-gradient(135deg,#8fdcbd,#5fc29c);-webkit-background-clip:text;background-clip:text}}
+
+/* Desktop (>=1000px) */
+@media(min-width:1000px){
+:root{--bg:#dde6e0;--card:#fff;--ink:#14211b;--mute:#44554d;--line:#bccac1;--hair:#bccac1;--glass:#fff;--glass2:#f3f7f4;--sh:0 1px 2px rgba(16,40,30,.10),0 10px 24px -14px rgba(16,40,30,.28);--teal:#1f6a50}
+:root[data-theme="dark"]{--bg:#0a110e;--card:#15201b;--ink:#eef5f1;--mute:#a9b8b0;--line:#30433b;--hair:#30433b;--glass:#15201b;--glass2:#1c2a24;--sh:0 1px 2px rgba(0,0,0,.5),0 10px 24px -14px rgba(0,0,0,.8);--teal:#7fd1b0}
+:root[data-theme="dark"] .chip.on{color:#0a110e}
+}
+
+/* Nút chuyển kiểu hiển thị: chữ trên nền chọn trong giao diện tối */
+:root[data-theme="dark"] .vmt button.on{color:#0a110e;background:#7fd1b0}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .vmt button.on{color:#0a110e;background:#7fd1b0}}
