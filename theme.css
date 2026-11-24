@@ -24,3 +24,9 @@
 :root[data-theme="dark"] .vmt button.on{color:#0a110e;background:#7fd1b0}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .vmt button.on{color:#0a110e;background:#7fd1b0}}
 .bdg{background:var(--red);color:#fff}.card.nt{border-left-color:var(--teal)}
+
+.about .sub,.ftr,.cs details{color:var(--mute)}.ftr a,.ck a{color:var(--teal)}
+
+.tag.sk-bql{background:#dff0e8;color:#1f5a46}.tag.sk-res{background:#fdf0d5;color:#7a5410}.tag.sk-ext{background:#e6e9f5;color:#3a4686}
+:root[data-theme="dark"] .tag.sk-bql{background:#1f4a3a;color:#a8e6c9}:root[data-theme="dark"] .tag.sk-res{background:#4a3a14;color:#f1d58e}:root[data-theme="dark"] .tag.sk-ext{background:#2a3157;color:#b9c3f2}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.sk-bql{background:#1f4a3a;color:#a8e6c9}:root:not([data-theme="light"]) .tag.sk-res{background:#4a3a14;color:#f1d58e}:root:not([data-theme="light"]) .tag.sk-ext{background:#2a3157;color:#b9c3f2}}
