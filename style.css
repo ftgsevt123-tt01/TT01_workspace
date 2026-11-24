@@ -181,3 +181,7 @@ details.card summary{cursor:pointer}
 @media(max-width:699px){.top nav button{padding:8px 4px;font-size:12.5px;white-space:nowrap}.top nav button span{white-space:nowrap}.topi{gap:4px;padding:0 8px}}
 /* Xác thực ảnh: gọn, bấm mới mở mã đầy đủ */
 details.vf{margin:6px 0}details.vf summary{cursor:pointer;font-size:13px;color:var(--mute)}details.vf .hash{word-break:break-all;margin-top:6px}
+
+.rc{cursor:pointer;text-decoration:underline dotted;text-underline-offset:3px}
+.igpv{padding:0 14px 12px;font-size:14px}.igpv>div{margin:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.igpv a{color:var(--mute,inherit);font-size:13px;opacity:.75}
+@media(min-width:1000px){.ig{display:flex;flex-direction:column}.ig .igh{order:0}.ig .igc.cap{order:1;padding:2px 16px 10px}.ig .igm{order:2}.ig .iga{order:3}.ig .igpv{order:4}}
