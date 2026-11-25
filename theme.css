@@ -63,3 +63,17 @@ mark{background:#fde9a8;color:inherit;border-radius:3px;padding:0 1px}
 
 :root[data-theme="dark"] .chip.on,:root[data-theme="dark"] .seg button.on{background:linear-gradient(135deg,#8fdcbd,#5fc29c);border-color:transparent}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.on,:root:not([data-theme="light"]) .seg button.on{background:linear-gradient(135deg,#8fdcbd,#5fc29c);border-color:transparent}}
+
+/* Bảng tin trang chủ */
+.hbmore{color:var(--mute)}
+
+/* Nhãn loại bài ở trang chủ */
+.tag.k-case{background:#fdf0d5;color:#7a5410}.tag.k-tb{background:#dff0e8;color:#1f5a46}.tag.k-urg{background:#fbe1dc;color:#9c2f1b}.tag.k-ev{background:#e6e9f5;color:#3a4686}.tag.k-lost{background:#efe4f6;color:#6a3a86}.tag.k-hb{background:#e7efe9;color:#2f5b4b}
+:root[data-theme="dark"] .tag.k-case{background:#4a3a14;color:#f1d58e}:root[data-theme="dark"] .tag.k-tb{background:#1f4a3a;color:#a8e6c9}:root[data-theme="dark"] .tag.k-urg{background:#5a221a;color:#ffb4a3}:root[data-theme="dark"] .tag.k-ev{background:#2a3157;color:#b9c3f2}:root[data-theme="dark"] .tag.k-lost{background:#3d2a4f;color:#dcc3f2}:root[data-theme="dark"] .tag.k-hb{background:#22362e;color:#bfe3d2}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .tag.k-case{background:#4a3a14;color:#f1d58e}:root:not([data-theme="light"]) .tag.k-tb{background:#1f4a3a;color:#a8e6c9}:root:not([data-theme="light"]) .tag.k-urg{background:#5a221a;color:#ffb4a3}:root:not([data-theme="light"]) .tag.k-ev{background:#2a3157;color:#b9c3f2}:root:not([data-theme="light"]) .tag.k-lost{background:#3d2a4f;color:#dcc3f2}:root:not([data-theme="light"]) .tag.k-hb{background:#22362e;color:#bfe3d2}}
+.hrm{color:var(--mute)}
+.hra.urg{border-color:color-mix(in srgb,var(--red) 50%,transparent);background:color-mix(in srgb,var(--red) 8%,var(--card))}
+.fab{background:var(--teal);color:var(--on);box-shadow:0 10px 24px -10px var(--teal)}
+
+/* Xem ảnh gốc */
+.zmv{background:#000}.zml{color:#e6eee9}.zmx{background:rgba(255,255,255,.16);color:#fff}
