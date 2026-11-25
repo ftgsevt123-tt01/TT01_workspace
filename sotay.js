@@ -34,8 +34,14 @@ async function hbWho(id){var r=await sb.from("hb_reactions").select("user_id").e
 function hbSetK(k){hbk=k;hbt="all";refresh()}
 function hbSetT(t){hbt=t;refresh()}
 function hbFind(inp){var s=inp.value.trim().toLowerCase(),n=0;document.querySelectorAll(".hbc").forEach(function(c){var ok=!s||c.dataset.s.indexOf(s)>-1;c.style.display=ok?"":"none";if(ok)n++});var e=$("hbnf");if(e)e.style.display=n?"none":""}
-function hbCard(it,E){var k=hbKL(it.kind),cov=pubUrl(it.cover_path),nf=(it.files||[]).length,r=E.r[it.id]||{n:0},nc=E.c[it.id]||0,ng=(E.g&&it.ref_group)?(E.g[it.ref_group]||1)-1:0;
-  return '<div class="card nl hbc" data-s="'+esc((it.title+" "+(it.body||"")+" "+(it.source||"")+" "+hbTopicL(it.topic)).toLowerCase())+'" onclick="go(\'hbitem\','+it.id+')">'+(cov?'<img src="'+esc(cov)+'" alt="">':'<div class="nth">'+k[2]+'</div>')+'<div style="min-width:0;flex:1"><div class="row">'+(it.pinned?'<span class="tag s-sent">📌 Ghim</span>':'')+'<span class="tag hbtp">'+esc(hbTopicL(it.topic))+'</span>'+(it.kind==="question"?(it.solved?'<span class="tag s-done">Đã giải đáp</span>':''):'')+(it.hidden?'<span class="tag s-new">Đã ẩn</span>':'')+'</div><b class="nt">'+esc(it.title)+'</b><div class="mute">'+esc(hbAu(it))+' · '+ago(it.created_at)+'</div><div class="mute hbm">'+(nf?'<span>📎 '+nf+' file</span>':'')+'<span>❤️ '+r.n+'</span><span>💬 '+nc+'</span>'+(ng>0?'<span>🔗 '+ng+' câu liên quan</span>':'')+'</div></div></div>'}
+function hbCard(it,E){var k=hbKL(it.kind),cov=pu(it.cover_path),nf=(it.files||[]).length,r=E.r[it.id]||{n:0},nc=E.c[it.id]||0,ng=(E.g&&it.ref_group)?(E.g[it.ref_group]||1)-1:0;
+  return '<div class="card nl hbc" data-s="'+esc((it.title+" "+(it.body||"")+" "+(it.source||"")+" "+hbTopicL(it.topic)).toLowerCase())+'" onclick="go(\'hbitem\','+it.id+')">'+(cov?imgT(cov):'<div class="nth">'+k[2]+'</div>')+'<div style="min-width:0;flex:1"><div class="row">'+(it.pinned?'<span class="tag s-sent">📌 Ghim</span>':'')+'<span class="tag hbtp">'+esc(hbTopicL(it.topic))+'</span>'+(it.kind==="question"?(it.solved?'<span class="tag s-done">Đã giải đáp</span>':''):'')+(it.hidden?'<span class="tag s-new">Đã ẩn</span>':'')+'</div><b class="nt">'+esc(it.title)+'</b><div class="mute">'+esc(hbAu(it))+' · '+ago(it.created_at)+'</div><div class="mute hbm">'+(nf?'<span>📎 '+nf+' file</span>':'')+'<span>❤️ '+r.n+'</span><span>💬 '+nc+'</span>'+(ng>0?'<span>🔗 '+ng+' câu liên quan</span>':'')+'</div></div></div>'}
+/* Thẻ Sổ tay dạng bài đăng cho Bảng tin trang chủ: chữ trước, ảnh sau, như Facebook */
+function hbIg(it,E){var k=hbKL(it.kind),cov=pu(it.cover_path),r=E.r[it.id]||{n:0,my:false},nc=E.c[it.id]||0,nf=(it.files||[]).length,p=it.profiles||{},nm=hbAu(it),b=it.body||"",o="go('hbitem',"+it.id+")",cut=b.length>240;
+  return '<article class="ig hbig"><div class="igh">'+av({name:nm,photo_path:it.author_label?null:p.photo_path,ini:nm==="Admin"?"AD":null},38)+'<div><b>'+esc(nm)+'</b><div class="mute">'+ago(it.created_at)+(it.edited_at?" · đã chỉnh sửa":"")+'</div><div class="igt"><span class="tag s-sent">'+k[2]+' '+k[1]+'</span> <span class="tag hbtp">'+esc(hbTopicL(it.topic))+'</span>'+(it.kind==="question"&&it.solved?' <span class="tag s-done">Đã giải đáp</span>':'')+'</div></div></div>'
+    +'<div class="igc hbtx" onclick="'+o+'"><b>'+esc(it.title)+'</b>'+(b?'<div class="hbex">'+esc(cut?b.slice(0,240).trim()+"…":b)+(cut?' <span class="hbmore">Xem thêm</span>':'')+'</div>':'')+(nf?'<div class="mute">📎 '+nf+' file đính kèm</div>':'')+'</div>'
+    +(cov?'<div class="igm" onclick="'+o+'">'+imgT(cov)+'</div>':'')
+    +'<div class="iga"><button class="heart'+(r.my?" on":"")+'" onclick="event.stopPropagation();hbLike('+it.id+','+r.my+')"><span class="e">'+(r.my?"❤️":"🤍")+'</span><span class="rc" onclick="event.stopPropagation();hbWho('+it.id+')">'+r.n+'</span></button><button onclick="'+o+'"><span class="e">💬</span>'+nc+(it.kind==="question"?' trả lời':'')+'</button><span style="flex:1"></span><button onclick="event.stopPropagation();copyLink(\'hbitem\','+it.id+')" aria-label="Sao chép link"><span class="e">🔗</span></button></div></article>'}
 async function hbView(){
   if(!hbVisible())return bar("Sổ tay cư dân")+'<p class="mute">Mục này chưa mở.</p>';
   var qy=sb.from("hb_items").select("*, profiles!author_id(name,photo_path)").eq("kind",hbk).order("pinned",{ascending:false}).order("created_at",{ascending:false}).limit(200);if(hbt!=="all")qy=qy.eq("topic",hbt);
@@ -60,7 +66,7 @@ async function hbItemView(){
   hbk=it.kind;var k=hbKL(it.kind),E=W[2],r=E.r[id]||{n:0,my:false},nc=E.c[id]||0,files=it.files||[],urls={};
   var W2=await Promise.all([files.length?sb.storage.from("handbook-files").createSignedUrls(files.map(function(f){return f.path}),3600).catch(function(e){console.error(e);return{}}):Promise.resolve({}),it.kind==="question"?hbRelated(it):Promise.resolve("")]);
   (W2[0].data||[]).forEach(function(x){if(x&&x.signedUrl)urls[x.path]=x.signedUrl});
-  var cov=pubUrl(it.cover_path),me=U.s.user.id,own=it.author_id===me,adm=hbAdm(),mod=can("hide_content"),B='style="width:auto;margin:0"',btns="";
+  var cov=pu(it.cover_path),me=U.s.user.id,own=it.author_id===me,adm=hbAdm(),mod=can("hide_content"),B='style="width:auto;margin:0"',btns="";
   if(own||adm)btns+='<button class="btn sm alt" '+B+' onclick="hbEdit('+id+')">✏️ Sửa</button>'+(own?'<button class="btn sm alt" '+B+' onclick="cf(this,function(){hbDel('+id+')})">🗑 Xóa</button>':'<button class="btn sm alt" '+B+' onclick="hbDelUi(['+id+'])">🗑 Xóa</button>');
   if(it.kind==="question"&&(own||adm))btns+='<button class="btn sm'+(it.solved?" alt":"")+'" '+B+' onclick="hbSet('+id+',{solved:'+!it.solved+'})">'+(it.solved?"Bỏ đánh dấu đã giải đáp":"✓ Đánh dấu đã giải đáp")+'</button>';
   if(adm)btns+='<button class="btn sm alt" '+B+' onclick="hbSet('+id+',{pinned:'+!it.pinned+'})">'+(it.pinned?"Bỏ ghim":"📌 Ghim")+'</button>';
@@ -68,7 +74,7 @@ async function hbItemView(){
   var h=bar(k[1],"hb")+'<div class="card hbd"><div class="row"><span class="tag s-sent">'+k[2]+' '+k[1]+'</span><span class="tag hbtp">'+esc(hbTopicL(it.topic))+'</span>'+(it.pinned?'<span class="tag s-sent">📌 Ghim</span>':'')+(it.kind==="question"&&it.solved?'<span class="tag s-done">Đã giải đáp</span>':'')+(it.hidden?'<span class="tag s-new">Đã ẩn</span>':'')+'</div>'
     +'<h2 class="hbh">'+esc(it.title)+'</h2><div class="mute">'+esc(hbAu(it))+' · '+stamp(it.created_at)+(it.edited_at?" · đã chỉnh sửa":"")+'</div>'
     +(it.source?'<div class="mute src">Nguồn: '+hbLinks(it.source)+'</div>':'')
-    +(cov?'<img src="'+esc(cov)+'" alt="">':'')
+    +(cov?imgT(cov,1):'')
     +(it.body?'<div class="hbb">'+hbLinks(it.body)+'</div>':'')
     +(files.length?'<div class="hbfs">'+files.map(function(f){var u=urls[f.path];return u?'<a class="hbfile" href="'+esc(u)+'" target="_blank" rel="noopener"><span class="hbx">'+esc(hbExt(f))+'</span><span class="hbfn"><b>'+esc(f.name||"Tệp đính kèm")+'</b><small>'+hbSize(f.size)+' · bấm để mở</small></span></a>':'<div class="hbfile off"><span class="hbx">'+esc(hbExt(f))+'</span><span class="hbfn"><b>'+esc(f.name||"Tệp đính kèm")+'</b><small>Không mở được file</small></span></div>'}).join("")+'</div>':'')
     +(btns?'<div class="row" style="gap:8px;margin-top:12px">'+btns+'</div>':'')+'</div>';
@@ -87,7 +93,7 @@ function hbAddCm(id){act(async function(){var t=v("hcin");if(!t)return toast("Nh
 function hbDelCm(id){act(async function(){var r=await q(sb.from("hb_comments").delete().eq("id",id).select("id"));if(!r||!r.length)throw new Error("Bạn không có quyền xóa bình luận này");refresh()})}
 function hbHideCm(id,h){act(async function(){await q(sb.from("hb_comments").update({hidden:h}).eq("id",id));refresh()})}
 function hbSet(id,patch){act(async function(){var r=await q(sb.from("hb_items").update(patch).eq("id",id).select("id"));if(!r||!r.length)throw new Error("Bạn không có quyền thực hiện thao tác này");refresh()})}
-function hbDel(id){act(async function(){var it=await q(sb.from("hb_items").select("files,cover_path").eq("id",id).maybeSingle()),r=await q(sb.from("hb_items").delete().eq("id",id).select("id"));if(!r||!r.length)throw new Error("Bạn không có quyền xóa bài này");if(it){var fp=(it.files||[]).map(function(f){return f.path});try{if(fp.length)await sb.storage.from("handbook-files").remove(fp);if(it.cover_path)await sb.storage.from("public-media").remove([it.cover_path])}catch(e){}}toast("Đã xóa bài");go("hb")})}
+function hbDel(id){act(async function(){var it=await q(sb.from("hb_items").select("files,cover_path").eq("id",id).maybeSingle()),r=await q(sb.from("hb_items").delete().eq("id",id).select("id"));if(!r||!r.length)throw new Error("Bạn không có quyền xóa bài này");if(it){var fp=(it.files||[]).map(function(f){return f.path});try{if(fp.length)await sb.storage.from("handbook-files").remove(fp);if(it.cover_path)await sb.storage.from("public-media").remove(withT([it.cover_path]))}catch(e){}}toast("Đã xóa bài");go("hb")})}
 
 /* ----- Đăng và sửa ----- */
 function hbNew(){hbFiles=[];hbDrop=[];hbCov=null;hbCovDel=false;hbKind=hbk;go("hbnew")}
@@ -124,15 +130,15 @@ function hbSave(){act(async function(){
   if(keep.length+hbFiles.length>5)return toast("Tối đa 5 file mỗi bài");
   try{
     for(var i=0;i<hbFiles.length;i++){var f=hbFiles[i],path=kind+"/"+Date.now()+"-"+i+"-"+hbSafe(f.name),r=await sb.storage.from("handbook-files").upload(path,f,{contentType:f.type||"application/octet-stream",upsert:false});if(r.error)throw r.error;up.push({path:path,name:f.name,size:f.size,type:f.type||""})}
-    if(hbCov){cov=me+"/hb-"+Date.now()+".jpg";var rc=await sb.storage.from("public-media").upload(cov,hbCov,{contentType:"image/jpeg"});if(rc.error){cov=null;throw rc.error}}
+    if(hbCov){cov=me+"/hb-"+Date.now()+".jpg";var rc=await sb.storage.from("public-media").upload(cov,hbCov,{contentType:"image/jpeg"});if(rc.error){cov=null;throw rc.error}await upThumb("public-media",cov,hbCov)}
     var row={topic:tp,title:t,body:b,source:src||null};
     if(adm&&kind==="doc")row.files=keep.concat(up);
     if(cov)row.cover_path=cov;else if(hbCovDel)row.cover_path=null;
     var id=ed;
     if(ed){var u=await q(sb.from("hb_items").update(row).eq("id",ed).select("id"));if(!u||!u.length)throw new Error("Bạn không có quyền sửa bài này")}
     else{row.kind=kind;var n=await q(sb.from("hb_items").insert(row).select("id").single());id=n.id}
-  }catch(e){try{if(up.length)await sb.storage.from("handbook-files").remove(up.map(function(x){return x.path}));if(cov)await sb.storage.from("public-media").remove([cov])}catch(x){}throw e}
-  try{if(hbDrop.length)await sb.storage.from("handbook-files").remove(hbDrop);if(old&&old.cover_path&&(cov||hbCovDel))await sb.storage.from("public-media").remove([old.cover_path])}catch(e){}
+  }catch(e){try{if(up.length)await sb.storage.from("handbook-files").remove(up.map(function(x){return x.path}));if(cov)await sb.storage.from("public-media").remove(withT([cov]))}catch(x){}throw e}
+  try{if(hbDrop.length)await sb.storage.from("handbook-files").remove(hbDrop);if(old&&old.cover_path&&(cov||hbCovDel))await sb.storage.from("public-media").remove(withT([old.cover_path]))}catch(e){}
   hbFiles=[];hbDrop=[];hbCov=null;hbCovDel=false;hbk=kind;toast(ed?"Đã lưu":"Đã đăng");go("hbitem",id)})}
 
 /* ----- Cài đặt Sổ tay (super admin) ----- */
@@ -174,7 +180,7 @@ var HBR=["Trùng lặp với câu hỏi đã có","Đăng nhầm","Nội dung kh
 function hbDelUi(ids){hbDelIds=ids.slice();var old=document.querySelector(".pm");if(old)old.remove();var m=document.createElement("div");m.className="pm";
   m.innerHTML='<div><b style="font-size:18px">Xóa '+(ids.length>1?ids.length+" bài":"bài này")+'</b><div class="mute">Bình luận và lượt thả tim đi kèm cũng bị xóa. Tác giả nhận thông báo kèm lý do'+(ids.length===1?'':'')+'. Nếu là câu hỏi trùng, nên liên kết với câu gốc trước để tác giả được dẫn sang đó.</div><label>Lý do</label><div class="chips" style="flex-wrap:wrap">'+HBR.map(function(r,i){return '<button class="chip" onclick="document.querySelectorAll(\'.hbrs\').forEach(function(b){b.classList.remove(\'on\')});this.classList.add(\'on\');$(\'hbro\').value=this.textContent" >'+r+'</button>'}).join("").replace(/class="chip"/g,'class="chip hbrs"')+'</div><input id="hbro" placeholder="Hoặc ghi lý do khác"><button class="btn" style="background:var(--red);border-color:transparent" onclick="cf(this,hbDoDel)">🗑 Xóa</button><button class="btn alt" onclick="this.closest(\'.pm\').remove()">Hủy</button></div>';
   m.onclick=function(e){if(e.target===m)m.remove()};document.body.appendChild(m)}
-function hbDoDel(){act(async function(){var why=v("hbro");if(!why)return toast("Chọn hoặc ghi lý do xóa");var ids=hbDelIds,r=await q(sb.rpc("hb_admin_delete",{p_ids:ids,p_reason:why}))||[],by={};r.forEach(function(x){(by[x.bucket]=by[x.bucket]||[]).push(x.path)});for(var b in by){try{await sb.storage.from(b).remove(by[b])}catch(e){}}var m=document.querySelector(".pm");if(m)m.remove();hbSel={};toast("Đã xóa "+ids.length+" bài");if(view==="hbitem")go("hb");else refresh()})}
+function hbDoDel(){act(async function(){var why=v("hbro");if(!why)return toast("Chọn hoặc ghi lý do xóa");var ids=hbDelIds,r=await q(sb.rpc("hb_admin_delete",{p_ids:ids,p_reason:why}))||[],by={};r.forEach(function(x){(by[x.bucket]=by[x.bucket]||[]).push(x.path)});for(var b in by){try{await sb.storage.from(b).remove(b==="public-media"?withT(by[b]):by[b])}catch(e){}}var m=document.querySelector(".pm");if(m)m.remove();hbSel={};toast("Đã xóa "+ids.length+" bài");if(view==="hbitem")go("hb");else refresh()})}
 
 /* ===== Quản lý bài Sổ tay (admin, moderator) ===== */
 var hmK="all",hmS="all",hbSel={};
