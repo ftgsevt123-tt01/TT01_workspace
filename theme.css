@@ -77,3 +77,6 @@ mark{background:#fde9a8;color:inherit;border-radius:3px;padding:0 1px}
 
 /* Xem ảnh gốc */
 .zmv{background:#000}.zml{color:#e6eee9}.zmx{background:rgba(255,255,255,.16);color:#fff}
+
+/* Link Quên mật khẩu */
+.fgl a{color:var(--teal);font-weight:600}

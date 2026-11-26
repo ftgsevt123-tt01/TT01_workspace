@@ -315,3 +315,6 @@ h2.sec{font-size:19px;font-weight:700;margin:22px 0 10px;letter-spacing:-.01em;t
 .zmv img{max-width:100%;max-height:100%;object-fit:contain;border-radius:0;margin:0;position:relative;z-index:1}
 .zml{position:absolute;left:0;right:0;bottom:calc(24px + env(safe-area-inset-bottom,0px));text-align:center;font-size:14px}
 .zmx{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:2;width:44px;height:44px;border-radius:99px;border:0;font-size:20px;cursor:pointer}
+
+/* Link Quên mật khẩu */
+.fgl a{text-decoration:none}
